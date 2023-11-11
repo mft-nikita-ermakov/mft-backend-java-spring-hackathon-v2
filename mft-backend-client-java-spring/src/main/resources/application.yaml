@@ -1,0 +1,13 @@
+jwt:
+  secret: 796796050403440934903fgkdfmdfmd
+  lifetime: 30m
+
+spring:
+  security:
+    user:
+      password: "{SHA-1} + encoded_password"
+
+
+eureka:
+  client:
+    enabled: true

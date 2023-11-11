@@ -1,0 +1,6 @@
+rootProject.name = 'mft-backend-java-spring-hackathon-v2'
+
+
+includeBuild("server-java-spring")
+includeBuild("mft-backend-client-java-spring")
+includeBuild("api-gateway-java-spring")
