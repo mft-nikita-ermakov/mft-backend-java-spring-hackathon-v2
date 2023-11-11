@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  mysql:
+    container_name: bd-hackathon-hack
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: hack
+    healthcheck:
+      test: "mysql -root -root platform -e 'select 1'"
+      interval: 1s
+      retries: 120
+    cap_add:
+      - SYS_NICE
+    networks:
+      docker-net-hackathon:
+
+  api-gateway-java-spring:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: api-gateway-java-spring
+    ports:
+      - "8765:8765"
+    command: java -jar api-gateway-java-spring.jar
+
+  mft-backend-client-java-spring:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: mft-backend-client-java-spring
+    ports:
+      - "9000:9000"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/hack
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      - mysql
+    command: java -jar mft-backend-client-java-spring.jar
+
+  server-java-spring:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: server-java-spring
+    ports:
+      - "8761:8761"
+    command: java -jar server-java-spring.jar
+
+networks:
+  docker-net-hackathon:
